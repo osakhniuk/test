@@ -1,1 +1,0 @@
-This package is created to monitor  current situation with Covid-19 in the world.

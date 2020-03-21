@@ -1,0 +1,2 @@
+class CovidPackageDetectors extends GrokPackage {
+}

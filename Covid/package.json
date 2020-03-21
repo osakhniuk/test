@@ -1,9 +1,6 @@
 {
   "name": "Covid",
-  "version": "4",
-  "fullName": "Covid-19 Package",
-  "description": " Covid-19 Current Situation in World",
-  "sources": [
-    "css/enamine_store.css"
-  ]
+  "version": "1",
+  "description": "Covid package",
+  "sources": []
 }

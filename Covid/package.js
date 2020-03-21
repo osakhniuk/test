@@ -1,7 +1,7 @@
 class CovidPackage extends GrokPackage {
 
     //tags: app
-    //name: Enamine Store
+    //name: Covid19
     startApp(context) {
         let emptyTable = DataFrame.create();
         let view = grok.addTableView(emptyTable);
@@ -9,13 +9,20 @@ class CovidPackage extends GrokPackage {
         view.basePath = '';
         view.root.className = 'grok-view grok-table-view';
 
-        grok.query('Covid:CasesByCountries', {}).then((products) => {
-            var customersView = null;
-        grok.addTableView(products);
-    });
+        function update() {
+            ui.setUpdateIndicator(view.root, true);
+            grok.callQuery('Covid:CasesByCountries', true, 100).then(fc => {
+                let data = JSON.parse(fc.getParamValue('stringResult'))['data'];
+            view.dataFrame = data !== null ? CovidPackage.dataToTable(data, 'covid') : emptyTable;
+            ui.setUpdateIndicator(view.root, false);
+        });
+        }
+
+        update();
+
+
+
 
     }
-
-
-
 }
+

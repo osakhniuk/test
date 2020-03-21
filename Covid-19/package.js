@@ -3,37 +3,23 @@ class CovidPackage extends GrokPackage {
     //tags: app
     //name: Covid-19 Current Situation
     startApp(context) {
-        let molecule = ui.moleculeInput('', 'c1ccccc1O');
-        let searchMode = ui.choiceInput('Mode', 'Similar', ['Exact', 'Similar', 'Substructure']);
-        let currency = ui.choiceInput('Currency', 'USD', ['USD', 'EUR']);
-        let similarity = ui.choiceInput('Similarity', '0.8', ['0.2', '0.4', '0.6', '0.8']);
-        let catalog = ui.choiceInput('Catalog', '', ['', 'BB', 'SCR', 'REAL']);
-        let filtersHost =  ui.div([molecule.root, searchMode.root, currency.root, similarity.root, catalog.root],
-            'enamine-store-controls,pure-form');
 
         let emptyTable = DataFrame.create();
         let view = grok.addTableView(emptyTable);
-        view.name = 'Enamine Store';
+        view.name = 'Covid-19';
         view.basePath = '';
-        view.description = 'Enamine Store search viewer';
-        view.root.className = 'grok-view grok-table-view enamine-store';
+        view.root.className = 'grok-view grok-table-view';
 
         function update() {
             ui.setUpdateIndicator(view.root, true);
-            grok.callQuery('EnamineStore:Search', {
-                'code': `search_${molecule.value}_${EnamineStorePackage.searchModeToCommand(searchMode.value)}`,
-                'currency': currency.value,
-                'sim': parseFloat(similarity.value),
-                'mode': catalog.value
-            }, true, 100).then(fc => {
+            grok.callQuery('Covid:CasesByCountries()', true, 100).then(fc => {
                 let data = JSON.parse(fc.getParamValue('stringResult'))['data'];
-                view.dataFrame = data !== null ? EnamineStorePackage.dataToTable(data, 'enaminestore') : emptyTable;
+                view.dataFrame = data !== null ?  CovidPackage.dataToTable(data, 'enaminestore') : emptyTable;
                 ui.setUpdateIndicator(view.root, false);
             });
         }
-
         update();
-
+/*
         molecule.onChanged(() => update());
         searchMode.onChanged(() => {
             similarity.enabled = searchMode.value === 'Similar';
@@ -150,3 +136,4 @@ class CovidPackage extends GrokPackage {
         return dict[name];
     }
 }
+*/
